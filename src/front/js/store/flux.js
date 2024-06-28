@@ -1,3 +1,5 @@
+import userOperationDispatcher from "./userOperationDispatcher";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -46,6 +48,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			createToken : async (username, password) => {
+				await userOperationDispatcher.createToken(username,password)
 			}
 		}
 	};

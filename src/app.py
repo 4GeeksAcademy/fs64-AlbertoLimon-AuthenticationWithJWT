@@ -3,6 +3,8 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask_jwt_extended import JWTManager, create_access_token
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
@@ -28,6 +30,10 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config["JWT_SECRET_KEY"] = "limon"
+jwt = JWTManager(app)
+
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
@@ -67,6 +73,33 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
+@app.route('/token', methods=['POST'])
+def create_token():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+
+    # Query your database for username and password
+    user = User.query.filter_by(username=username, password=password).first()
+
+    if user is None:
+        # The user was not found on the database
+        return jsonify({"msg": "Bad username or password"}), 401
+    
+    # Create a new token with the user id inside
+    access_token = create_access_token(identity=user.id)
+    return jsonify({ "token": access_token, "user_id": user.id })
+
+
+
+# Protect a route with jwt_required, which will kick out requests without a valid JWT
+@app.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    return jsonify({"id": user.id, "username": user.username }), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
