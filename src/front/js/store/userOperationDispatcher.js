@@ -22,3 +22,5 @@ const userOperationDispatcher = {
         return data
     }
 }
+
+export default userOperationDispatcher

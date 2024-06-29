@@ -1,26 +1,24 @@
 import { useContext } from "react";
 import { Context } from "../store/appContext";
-import "../../styles/register.css";
+import "../../styles/login.css";
 
 import React, { useEffect, useState } from "react";
 
 
-export const SignUp = () => {
+export const SignIn = () => {
     
 
 	const [inputEmail, setInputEmail] = useState("");
 	const [inputPassword, setInputPassword] = useState("");
 
-	const handleSubmit = () => {
-		console.log("submit")
-	}
+    
 
     return (
         <>
             <div className="container">
-			<h1 className="">SIGN UP</h1>
+			<h1 className="mb-4">LOGIN</h1>
 				<form className="">
-
+		
 
 					<label htmlFor="emailUser" className="form-label">Email</label>
 					<input type="email" className="form-control mb-3" id="emailInput" placeholder="Enter email" onChange={(event) => setInputEmail(event.target.value)}
@@ -30,7 +28,7 @@ export const SignUp = () => {
 					<input type="password" className="form-control mb-3" id="passwordInput" placeholder="Enter password" onChange={(event) => setInputPassword(event.target.value)}
 							value={inputPassword}/>
 	
-					<button type="submit" className="btn-submit btn btn-primary w-100 mb-3" onSubmit={handleSubmit()}>Sign up</button>
+					<button type="submit" className="btn-submit btn btn-primary w-100 mb-3" onClick>Sign in</button>
 					
 				</form>
 		    </div>

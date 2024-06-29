@@ -1,0 +1,17 @@
+.container{
+    margin: 100px auto;
+    width: 30%;
+    border: 2px solid black;
+    border-radius: 1rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+    padding-bottom: 2rem;
+}
+h1{
+    margin-top: 2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+.btn-submit{
+    margin-top: 1rem;
+}
