@@ -13,6 +13,7 @@ export const SignUp = () => {
 
 	const handleSubmit = () => {
 		console.log("submit")
+		
 	}
 
     return (
@@ -20,7 +21,6 @@ export const SignUp = () => {
             <div className="container">
 			<h1 className="">SIGN UP</h1>
 				<form className="">
-
 
 					<label htmlFor="emailUser" className="form-label">Email</label>
 					<input type="email" className="form-control mb-3" id="emailInput" placeholder="Enter email" onChange={(event) => setInputEmail(event.target.value)}
