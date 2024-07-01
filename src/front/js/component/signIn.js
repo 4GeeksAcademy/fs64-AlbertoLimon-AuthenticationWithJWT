@@ -3,6 +3,7 @@ import { Context } from "../store/appContext";
 import "../../styles/login.css";
 
 import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 export const SignIn = () => {
@@ -11,7 +12,7 @@ export const SignIn = () => {
 	const [inputEmail, setInputEmail] = useState("");
 	const [inputPassword, setInputPassword] = useState("");
 
-    
+    const navigate = useNavigate();
 
     return (
         <>
@@ -30,6 +31,7 @@ export const SignIn = () => {
 	
 					<button type="submit" className="btn-submit btn btn-success w-100 mb-3" onClick>Sign in</button>
 					
+					<a className="text-primary" onClick={() =>  navigate("/register")}>Click here if you are not registered</a>
 				</form>
 		    </div>
         </>

@@ -21,6 +21,9 @@ const userOperationDispatcher = {
      
                const data = await response.json();
                localStorage.setItem("jwt-token", data.token);
+               if(data.created){
+
+               }
                return data;
           } catch (error) {
                console.error("Error during registration:", error);
