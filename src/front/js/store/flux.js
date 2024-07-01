@@ -15,7 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -49,8 +50,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
-			createToken : async (username, password) => {
-				await userOperationDispatcher.createToken(username,password)
+			createUser: async (email, password) => {
+				await userOperationDispatcher.register(email,password)
+			}
+			,
+			loginUser : async (email, password) => {
+				await userOperationDispatcher.login(email,password)
 			}
 		}
 	};

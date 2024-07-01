@@ -28,7 +28,7 @@ export const SignIn = () => {
 					<input type="password" className="form-control mb-3" id="passwordInput" placeholder="Enter password" onChange={(event) => setInputPassword(event.target.value)}
 							value={inputPassword}/>
 	
-					<button type="submit" className="btn-submit btn btn-primary w-100 mb-3" onClick>Sign in</button>
+					<button type="submit" className="btn-submit btn btn-success w-100 mb-3" onClick>Sign in</button>
 					
 				</form>
 		    </div>
