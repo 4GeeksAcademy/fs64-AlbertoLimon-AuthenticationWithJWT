@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Context } from "../store/appContext";
+
 import "../../styles/register.css";
 
 import React, { useEffect, useState } from "react";
@@ -12,11 +13,15 @@ export const SignUp = () => {
 	const [inputEmail, setInputEmail] = useState("");
 	const [inputPassword, setInputPassword] = useState("");
 
+	const history = useHistory();
+
 	const handleSubmit = async (event) => {
 		event.preventDefault(); // Previene que el formulario recargue la página
         console.log("submit");
         try {
             await actions.createUser(inputEmail, inputPassword);
+			
+
         } catch (error) {
             console.error("Error during user creation:", error);
         }

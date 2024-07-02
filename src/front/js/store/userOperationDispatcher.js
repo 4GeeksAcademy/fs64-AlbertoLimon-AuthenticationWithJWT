@@ -1,6 +1,14 @@
+import React from "react";
+import { useContext } from "react";
+import { Context } from "../store/appContext";
+import { useHistory } from "react-router-dom";
+
+
 const userOperationDispatcher = {
+     
      register : async (email, password) => {
           try {
+
                const response = await fetch(process.env.BACKEND_URL + "/register", {
                     method: "POST",
                     headers: {
@@ -21,8 +29,11 @@ const userOperationDispatcher = {
      
                const data = await response.json();
                localStorage.setItem("jwt-token", data.token);
-               if(data.created){
 
+               const history = useHistory();
+
+               if(data.created){
+                    history.push("/login")
                }
                return data;
           } catch (error) {
@@ -32,6 +43,8 @@ const userOperationDispatcher = {
      },
      
      login : async (email, password) => {
+          
+
           const resp = await fetch(process.env.BACKEND_URL+"/login", { 
                method: "POST",
                headers: { "Content-Type": "application/json" },
@@ -47,9 +60,18 @@ const userOperationDispatcher = {
                throw ("Invalid email or password format")
           }
           const data = await resp.json()
-          // Save your token in the localStorage
-          // Also you should set your user into the store using the setItem function
-          localStorage.setItem("jwt-token", data.token);
+
+          const history = useHistory();
+          const { actions } = useContext(Context)
+
+          if(data.token) {
+               // Save your token in the localStorage
+               // Also you should set your user into the store using the setItem function
+               localStorage.setItem("jwt-token", data.token);
+               actions.verify()
+               history.push("/private")
+          }
+          
           
           return data
      },

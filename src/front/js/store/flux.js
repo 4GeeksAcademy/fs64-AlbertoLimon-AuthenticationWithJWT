@@ -3,6 +3,7 @@ import userOperationDispatcher from "./userOperationDispatcher";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
+			logged: null,
 			message: null,
 			demo: [
 				{
@@ -56,6 +57,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 			,
 			loginUser : async (email, password) => {
 				await userOperationDispatcher.login(email,password)
+			},
+			verify: async() => {
+				try{
+					const response = await fetch(process.env.BACKEND_URL + "/protected", {
+						method: "GET",
+						headers: {
+							 "Content-Type": "application/json",
+							 'Authorization' : 'Bearer' + localStorage.getItem("token")
+						},
+						
+				   });
+				   const data = await response.json();
+				   setStore({ logged : data.logged_in  || false });
+
+				}catch(error) {
+					setStore({ logged : false })
+				}
+			},
+			logout: async() => {
+				localStorage.clear()
+				setStore({ logged: false});
 			}
 		}
 	};
