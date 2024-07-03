@@ -3,7 +3,7 @@ import userOperationDispatcher from "./userOperationDispatcher";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			logged: null,
+			logged: false,
 			message: null,
 			demo: [
 				{
@@ -17,7 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			
+
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -26,14 +26,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getMessage: async () => {
-				try{
+				try {
 					// fetching data from the backend
 					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
 					// don't forget to return something, that is how the async resolves
 					return data;
-				}catch(error){
+				} catch (error) {
 					console.log("Error loading message from backend", error)
 				}
 			},
@@ -52,32 +52,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 			},
 			createUser: async (email, password) => {
-				await userOperationDispatcher.register(email,password)
+				const resp = await userOperationDispatcher.register(email, password)
+				return await resp;
 			}
 			,
-			loginUser : async (email, password) => {
-				await userOperationDispatcher.login(email,password)
+			loginUser: async (email, password) => {
+				await userOperationDispatcher.login(email, password)
+				await getActions().verify()
 			},
-			verify: async() => {
-				try{
+			verify: async () => {
+				try {
 					const response = await fetch(process.env.BACKEND_URL + "/protected", {
 						method: "GET",
 						headers: {
-							 "Content-Type": "application/json",
-							 'Authorization' : 'Bearer' + localStorage.getItem("token")
+							"Content-Type": "application/json",
+							'Authorization': 'Bearer ' + localStorage.getItem("jwt-token")
 						},
-						
-				   });
-				   const data = await response.json();
-				   setStore({ logged : data.logged_in  || false });
 
-				}catch(error) {
-					setStore({ logged : false })
+					});
+					if(resp.status == 422){
+						return false;
+					}
+					
+					const data = await response.json();
+
+					if (data.logged_in) {
+						setStore({ logged: data.logged_in })
+						return true
+					} else {
+						return false
+					}
+
+
+				} catch (error) {
+					setStore({ logged: false })
 				}
 			},
-			logout: async() => {
+			logout: async () => {
 				localStorage.clear()
-				setStore({ logged: false});
+				setStore({ logged: false });
 			}
 		}
 	};
