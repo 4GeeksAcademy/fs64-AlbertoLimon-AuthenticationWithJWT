@@ -14,16 +14,13 @@ export const SignIn = () => {
 
 	const navigate = useNavigate()
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault()
 		console.log("submit");
 		try {
-			if (actions.loginUser(inputEmail, inputPassword)) {
-				navigate("/private")
-			}else{
-				
-			}
-
+			await actions.login(inputEmail, inputPassword) 
+			navigate("/private")
+			
 		} catch (error) {
 			console.error("Error during user login:", error);
 		}
@@ -49,8 +46,6 @@ export const SignIn = () => {
 					<button type="submit" className="btn-submit btn btn-success w-100 mb-3" >Sign in</button>
 
 					<Link className="text-primary" to={"/register"}>Click here if you are not registered</Link>
-
-					<button type="button" className=" btn btn-warning w-50 mb-3 mt-4" onClick={() => navigate("/private")}>Go to private</button>
 				</form>
 			</div>
 		</>

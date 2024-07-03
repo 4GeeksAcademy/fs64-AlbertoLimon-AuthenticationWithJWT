@@ -20,10 +20,9 @@ export const SignUp = () => {
 		event.preventDefault(); // Previene que el formulario recargue la página
 		console.log("submit");
 		try {
-			if (actions.createUser(inputEmail, inputPassword)) {
-				navigate("/login")
+			if (await actions.register(inputEmail, inputPassword)) {
+				navigate("/private")
 			}
-
 
 		} catch (error) {
 			console.error("Error during user creation:", error);
@@ -31,7 +30,6 @@ export const SignUp = () => {
 
 	}
 
-	console.log("inputemail: ", inputEmail, "password: ", inputPassword);
 
 	return (
 		<>
